@@ -1,13 +1,23 @@
-import express from "express"
-import path from "path"
+import express from "express";
+import path from "path";
 
-const app = express()
-const PORT = 4000
+const app = express();
+const PORT = 4000;
 
-const publicPath = path.join(__dirname, "../public")
+const urls = new Map<string, string>();
 
-app.use(express.static(publicPath))
+const publicPath = path.join(__dirname, "../public");
+
+app.use(express.static(publicPath));
+app.use(express.json());
+
+app.post("/", (req, res) => {
+  const url = req.body.url;
+  const code = Math.random().toString(36).substring(2, 8);
+  urls.set(code, url);
+  res.json({ short_url: "/" + code, url: url });
+});
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-})
+  console.log(`Server is running on port ${PORT}`);
+});
