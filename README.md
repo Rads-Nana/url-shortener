@@ -11,7 +11,7 @@ Head to http://localhost:4000
 
 ## API
 
-POST / 
+POST /
 Body: { "url": "http://www.google.com"}
 Response: { "short_url": "/qrs123", "url": "http://www.google.com"}
 
