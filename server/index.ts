@@ -18,6 +18,17 @@ app.post("/", (req, res) => {
   res.json({ short_url: "/" + code, url: url });
 });
 
+app.get("/:code", (req, res) => {
+    const code = req.params.code
+    const url = urls.get(code)
+
+    if (!url) {
+        res.status(404).json({"error": "URL not found"})
+    } else {
+        res.status(301).location(url).json({ url })
+    }
+})
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
