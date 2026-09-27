@@ -8,26 +8,38 @@ const urls = new Map<string, string>();
 
 const publicPath = path.join(__dirname, "../public");
 
+function isValidUrl(value: string): boolean {
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch (err) {
+    return false;
+  }
+}
+
 app.use(express.static(publicPath));
 app.use(express.json());
 
 app.post("/", (req, res) => {
   const url = req.body.url;
+  if (!url || !isValidUrl(url)) {
+    return res.status(400).json({ error: "Invalid URL" });
+  }
   const code = Math.random().toString(36).substring(2, 8);
   urls.set(code, url);
   res.json({ short_url: "/" + code, url: url });
 });
 
 app.get("/:code", (req, res) => {
-    const code = req.params.code
-    const url = urls.get(code)
+  const code = req.params.code;
+  const url = urls.get(code);
 
-    if (!url) {
-        res.status(404).json({"error": "URL not found"})
-    } else {
-        res.status(301).location(url).json({ url })
-    }
-})
+  if (!url) {
+    res.status(404).json({ error: "URL not found" });
+  } else {
+    res.status(301).location(url).json({ url });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
