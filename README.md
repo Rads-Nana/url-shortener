@@ -4,8 +4,10 @@ A URL shortening app built with Node.js, Express and TypeScript, along with HTML
 
 ## Set up
 
-```npm install
-npm run dev```
+```bash
+npm install
+npm run dev
+```
 
 Head to http://localhost:4000
 
@@ -13,11 +15,11 @@ Head to http://localhost:4000
 
 POST /
 Body: 
-```
+```json
 { "url": "http://www.google.com"}
 ```
 Response: 
-```
+```json
 { "short_url": "/qrs123", "url": "http://www.google.com"}
 ````
 GET /:code
