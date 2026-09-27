@@ -1,8 +1,13 @@
 const form = document.getElementById("urlshorten-form");
 const input = document.getElementById("url");
+const result = document.getElementById("result");
+const error = document.getElementById("error");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  error.textContent = "";
+  result.innerHTML = "";
 
   const url = input.value;
 
@@ -14,5 +19,10 @@ form.addEventListener("submit", async (e) => {
 
   const data = await response.json();
 
-  console.log(data);
+  if (!response.ok) {
+    error.textContent = data.error;
+  } else {
+    const fullUrl = window.location.origin + data.short_url;
+    result.innerHTML = `Shortened URL is <a href="${fullUrl}" target="_blank">${fullUrl}</a>`;
+  }
 });
